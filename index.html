@@ -1,0 +1,185 @@
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pakistan SIM Database | Ali Hassan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #ff85a2, #ff6b6b);
+            color: white;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .search-box {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        input {
+            padding: 12px 20px;
+            border: 2px solid #ff85a2;
+            border-radius: 25px;
+            width: 300px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255,133,162,0.3);
+        }
+
+        .btn {
+            background: #ff85a2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,133,162,0.4);
+            background: #ff6b6b;
+        }
+
+        .youtube-link {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .youtube-link a {
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .youtube-link a:hover {
+            color: #ff6b6b;
+        }
+
+        .results {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .formatted-data {
+            background: #fff5f7;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            border: 2px solid #ffe6eb;
+        }
+
+        .formatted-data p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        .formatted-data strong {
+            color: #ff6b6b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Pakistan SIM Database</h1>
+        <p>Your Trusted Source for SIM Information</p>
+    </div>
+
+    <div class="youtube-link">
+        <a href="https://youtube.com/@ali_h56?si=InXUGXoOPc9bvbFX" target="_blank">
+            <i class="fab fa-youtube"></i> Visit My YouTube Channel
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="search-box">
+            <input type="number" id="numberInput" placeholder="Enter Mobile Number">
+            <button class="btn" onclick="fetchData()"><i class="fas fa-search"></i> Search</button>
+        </div>
+
+        <div id="results" class="results"></div>
+    </div>
+
+    <footer>
+        <p>© 2023 Pakistan SIM Database | Developed by Ali Hassan</p>
+    </footer>
+
+    <script>
+        async function fetchData() {
+            const number = document.getElementById('numberInput').value;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Searching... <i class="fas fa-spinner fa-spin"></i></p>';
+
+            try {
+                const apiUrl = `https://API.allorigins.win/get?url=${encodeURIComponent(`https://fam-official.serv00.net/sim/sim/api.php?num=${number}`)}`;
+                const response = await fetch(apiUrl);
+                const result = await response.json();
+                const apiData = JSON.parse(result.contents);
+
+                if (apiData.status === "success" && apiData.data.length > 0) {
+                    let formattedData = '';
+                    apiData.data.forEach(user => {
+                        formattedData += `
+                            <div class="formatted-data">
+                                <p><strong>Name:</strong> ${user.Name || "N/A"}</p>
+                                <p><strong>Mobile:</strong> ${user.Mobile || "N/A"}</p>
+                                <p><strong>CINC:</strong> ${user.CINC || "N/A"}</p>
+                            </div>
+                        `;
+                    });
+                    resultsDiv.innerHTML = formattedData;
+                } else {
+                    resultsDiv.innerHTML = '<p class="error">No results found for this number</p>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<p class="error">Error fetching data. Please try again.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
+```
