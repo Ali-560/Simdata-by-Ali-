@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pakistan SIM Database | By Ali Hassan</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #013220;
+    }
+
+    header {
+      background: #013220;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      font-weight: bold;
+      box-shadow: 0 0 15px #00ff99;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #014d36;
+      font-size: 1.8rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #00cc99;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      transition: 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #00ffcc;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #00ff99, #00cc66);
+      border: none;
+      color: #013220;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 0 12px #00ff88;
+      text-shadow: 0 1px 1px white;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #013220, #00cc66);
+      color: #00ff99;
+      box-shadow: 0 0 25px #00ffcc;
+    }
+
+    .formatted-data {
+      background: #f1fff6;
+      padding: 15px 20px;
+      border-left: 5px solid #00cc77;
+      border-radius: 10px;
+      margin-top: 25px;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.15);
+    }
+
+    .formatted-data p {
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    .separator {
+      margin-top: 15px;
+      border-top: 1px dashed #ccc;
+    }
+
+    .error {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #ffe6e6;
+      color: #cc0000;
+      border-radius: 10px;
+      border-left: 5px solid #cc0000;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 20px;
+      font-size: 14px;
+      color: #014d36;
+    }
+
+    .loader {
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
+      color: #014d36;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Pakistan SIM Database <br><small style="font-size: 16px; font-weight: normal;">By Ali Hassan - Ethical Lookup Portal</small>
+</header>
+
+<div class="container">
+  <h2>🔍 Search SIM Owner Information</h2>
+  <input type="text" id="numberInput" placeholder="Enter 11-digit Phone Number (e.g., 03001234567)" />
+  <button class="btn" onclick="fetchSimData()">🔎 Search</button>
+  <div id="responseBox"></div>
+</div>
+
+<footer>
+  &copy; 2025 Ali Hassan | Made with 💚 for Ethical Use
+</footer>
+
+<script>
+  async function fetchSimData() {
+    const number = document.getElementById("numberInput").value.trim();
+    const responseBox = document.getElementById("responseBox");
+    responseBox.innerHTML = "";
+
+    if (!/^03\d{9}$/.test(number)) {
+      responseBox.innerHTML = '<div class="error">⚠️ Please enter a valid 11-digit Pakistani number starting with 03.</div>';
+      return;
+    }
+
+    responseBox.innerHTML = '<div class="loader">⏳ Fetching data from the database...</div>';
+
+    const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://fam-official.serv00.net/sim/api.php?num=${number}`)}`;
+
+    try {
+      const response = await fetch(url);
+      const result = await response.json();
+      const apiData = JSON.parse(result.contents);
+
+      if (apiData.status === "success" && apiData.data.length > 0) {
+        let formattedData = "";
+
+        apiData.data.forEach(user => {
+          formattedData += `
+            <div class="formatted-data">
+              <p><strong>🔹 Name:</strong> ${user.Name || "N/A"}</p>
+              <p><strong>🔹 Mobile:</strong> ${user.Mobile || "N/A"}</p>
+              <p><strong>🔹 CNIC:</strong> ${user.CNIC || "N/A"}</p>
+              <p><strong>🔹 Operator:</strong> ${user.Operator || "N/A"}</p>
+              <p><strong>🔹 Address:</strong> ${user.Address || "N/A"}</p>
+            </div>
+            <div class="separator"></div>
+          `;
+        });
+
+        responseBox.innerHTML = formattedData;
+      } else {
+        responseBox.innerHTML = '<div class="error">❌ No data found for this number.</div>';
+      }
+    } catch (error) {
+      responseBox.innerHTML = `<div class="error">❌ API Error: ${error.message}</div>`;
+    }
+  }
+</script>
+
+</body>
+</html>
